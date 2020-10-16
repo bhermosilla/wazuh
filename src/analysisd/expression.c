@@ -62,3 +62,32 @@ bool w_expression_add_osip(w_expression_t ** var, char * ip) {
 
     return true;
 }
+
+// true on error
+bool w_expression_compile(w_expression_t * expression, char * pattern, int flags) {
+
+    bool retval = false;
+
+    switch (expression->exp_type) {
+        
+        case EXP_TYPE_OSREGEX:
+            if(!OSRegex_Compile(pattern, expression->regex, flags)) {
+                merror(REGEX_COMPILE, pattern, expression->regex->error);
+                retval = true;
+            }
+            break;
+
+        case EXP_TYPE_OSMATCH:
+            if (!OSMatch_Compile(pattern, expression->match, flags)) {
+                merror(REGEX_COMPILE, pattern, expression->match->error);
+                retval = true;
+            }
+            break;
+        
+        default:
+            merror_exit("Bad type 4 compile");
+            break;
+    }
+
+    return retval;
+}

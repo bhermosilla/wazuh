@@ -18,6 +18,7 @@
  * @brief Determine the types of expression allowed
  */
 typedef enum { 
+    EXP_TYPE_INVALID = -1,
     EXP_TYPE_OSREGEX,
     EXP_TYPE_OSMATCH,
     EXP_TYPE_STRING,
@@ -60,5 +61,7 @@ void w_calloc_expression_t(w_expression_t ** var, w_exp_type_t type);
  * @return true on success, otherwise false
  */
 bool w_expression_add_osip(w_expression_t ** var, char * ip);
+
+bool w_expression_compile(w_expression_t * expression, char * pattern, int flags);
 
 #endif
